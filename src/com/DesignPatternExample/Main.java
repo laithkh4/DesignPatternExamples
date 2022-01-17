@@ -1,8 +1,8 @@
 package com.DesignPatternExample;
-
+import java.awt.color.ColorSpace;
 
 public class Main {
-
+    private static final String colors[] = { "Red", "Green", "Blue", "White", "Black" };
     public static void main(String[] args) {
 /*      Abstract Factory
         AbstractFactory shapeFactory= FactoryProvider.getFactory(true);
@@ -35,6 +35,15 @@ public class Main {
         System.out.println("Shape : " + clonedShape3.getType());
         System.out.println("Shape : " + clonedShape3.getId());*/
 
+/*        Object pool
+        JDBCConnectionPool pool = new JDBCConnectionPool(
+                "org.hsqldb.jdbcDriver", "jdbc:hsqldb: //localhost/mydb",
+                "sa", "password");
+
+        // Get a connection:
+        Connection con = pool.takeOut();
+        // Return the connection:
+        pool.takeIn(con);*/
      /* Singleton
         SingletonClassExample singletonClassExample= SingletonClassExample.getInstance();
         singletonClassExample.getX();*/
@@ -80,6 +89,46 @@ public class Main {
 
         System.out.println("\nRectangle of red border");
         redRectangle.draw();*/
+/*  Facade
+        ShapeMaker shapeMaker = new ShapeMaker();
+
+        shapeMaker.drawCircle();
+        shapeMaker.drawRectangle();
+        shapeMaker.drawSquare();*/
+
+       /* Flyweight
+            for(int i=0; i < 20; ++i) {
+                FlyweightCircle circle = (FlyweightCircle)FlyweightShapeFactory.getCircle(getRandomColor());
+                circle.setX(getRandomX());
+                circle.setY(getRandomY());
+                circle.setRadius(100);
+                circle.draw();*/
+
+        /* Private class Data
+         var stew = new Stew(1, 2, 3, 4);
+        stew.mix();
+        stew.mix();
+        var immutableStew = new ImmutableStew(2, 4, 3, 6);
+        immutableStew.mix();*/
+        /* Proxy
+        Image image = new ProxyImage("test_10mb.jpg");
+
+        //image will be loaded from disk
+        image.display();
+        System.out.println("");
+
+        //image will not be loaded from disk
+        image.display();*/
 
     }
+    private static String getRandomColor() {
+        return colors[(int)(Math.random()*colors.length)];
+    }
+    private static int getRandomX() {
+        return (int)(Math.random()*100 );
+    }
+    private static int getRandomY() {
+        return (int)(Math.random()*100);
+    }
+
 }
