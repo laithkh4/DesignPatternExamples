@@ -1,5 +1,16 @@
 package com.DesignPatternExample;
+import com.DesignPatternExample.BehavioralDP.ChainOfResponsibility.AbstractLogger;
+import com.DesignPatternExample.BehavioralDP.ChainOfResponsibility.ConsoleLogger;
+import com.DesignPatternExample.BehavioralDP.ChainOfResponsibility.ErrorLogger;
+import com.DesignPatternExample.BehavioralDP.ChainOfResponsibility.FileLogger;
+import com.DesignPatternExample.BehavioralDP.Interpreter.AndExpression;
+import com.DesignPatternExample.BehavioralDP.Interpreter.Expression;
+import com.DesignPatternExample.BehavioralDP.Interpreter.OrExpression;
+import com.DesignPatternExample.BehavioralDP.Interpreter.TerminalExpression;
+
 import java.awt.color.ColorSpace;
+import java.util.Arrays;
+import java.util.Iterator;
 
 public class Main {
     private static final String colors[] = { "Red", "Green", "Blue", "White", "Black" };
@@ -78,7 +89,7 @@ public class Main {
 /*     Decorator
         Shape circle = new Circle();
 
-        Shape redCircle = new RedShapeDecorator(new Circle());
+        Shape redCircle = new RedShapeDecorator(new DecoratorCircle());
 
         Shape redRectangle = new RedShapeDecorator(new Rectangle());
         System.out.println("Circle with normal border");
@@ -103,7 +114,6 @@ public class Main {
                 circle.setY(getRandomY());
                 circle.setRadius(100);
                 circle.draw();*/
-
         /* Private class Data
          var stew = new Stew(1, 2, 3, 4);
         stew.mix();
@@ -120,6 +130,46 @@ public class Main {
         //image will not be loaded from disk
         image.display();*/
 
+/*    Chain of Responsibility
+        AbstractLogger loggerChain = getChainOfLoggers();
+
+        loggerChain.logMessage(AbstractLogger.INFO,
+                "This is an information.");
+
+        loggerChain.logMessage(AbstractLogger.DEBUG,
+                "This is an debug level information.");
+
+        loggerChain.logMessage(AbstractLogger.ERROR,
+                "This is an error information.");*/
+
+    /* Command
+        SimpleRemoteControl remote =
+                new SimpleRemoteControl();
+        Light light = new Light();
+        Stereo stereo = new Stereo();
+
+        // we can change command dynamically
+        remote.setCommand(new
+                LightOnCommand(light));
+        remote.buttonWasPressed();
+        remote.setCommand(new
+                StereoOnWithCDCommand(stereo));
+        remote.buttonWasPressed();
+        remote.setCommand(new
+                StereoOffCommand(stereo));
+        remote.buttonWasPressed();*/
+/*      Interpreter
+        Expression isMale = getMaleExpression();
+        Expression isMarriedWoman = getMarriedWomanExpression();
+
+        System.out.println("John is male? " + isMale.interpret("John"));
+        System.out.println("Julie is a married women? " + isMarriedWoman.interpret("Married Julie"));*/
+
+/*      Iterator
+        NotificationCollection nc = new NotificationCollection();
+        NotificationBar nb = new NotificationBar(nc);
+        nb.printNotifications();*/
+
     }
     private static String getRandomColor() {
         return colors[(int)(Math.random()*colors.length)];
@@ -130,5 +180,29 @@ public class Main {
     private static int getRandomY() {
         return (int)(Math.random()*100);
     }
+    private static AbstractLogger getChainOfLoggers(){
 
+        AbstractLogger errorLogger = new ErrorLogger(AbstractLogger.ERROR);
+        AbstractLogger fileLogger = new FileLogger(AbstractLogger.DEBUG);
+        AbstractLogger consoleLogger = new ConsoleLogger(AbstractLogger.INFO);
+
+        errorLogger.setNextLogger(fileLogger);
+        fileLogger.setNextLogger(consoleLogger);
+
+        return errorLogger;
+    }
+
+    //Rule: Robert and John are male
+    public static Expression getMaleExpression(){
+        Expression robert = new TerminalExpression("Robert");
+        Expression john = new TerminalExpression("John");
+        return new OrExpression(robert, john);
+    }
+
+    //Rule: Julie is a married women
+    public static Expression getMarriedWomanExpression(){
+        Expression julie = new TerminalExpression("Julie");
+        Expression married = new TerminalExpression("Married");
+        return new AndExpression(julie, married);
+    }
 }

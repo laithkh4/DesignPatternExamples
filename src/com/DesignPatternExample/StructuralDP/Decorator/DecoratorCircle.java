@@ -1,6 +1,6 @@
 package com.DesignPatternExample.StructuralDP.Decorator;
 
-public class Circle implements DecoratorShape{
+public class DecoratorCircle implements DecoratorShape{
     @Override
     public void draw() {
         System.out.println("Shape: Circle");
